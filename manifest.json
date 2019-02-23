@@ -11,5 +11,9 @@
     "default_icon": "logo.png",
     "default_popup": "popup.html"
   },
-  "permissions": [ "activeTab", "storage" ]
+  "permissions": [
+    "activeTab",
+    "storage",
+    "https://www.vietnamairlines.com/"
+  ]
 }
