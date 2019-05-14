@@ -1,19 +1,14 @@
 {
   "manifest_version": 2,
-  "name": "Cheese Ticket",
+  "name": "God hand",
   "version": "1.0.0",
-  "description": "Watch cheap fight ticket for you!",
-  "background": {
-    "scripts": [ "js/background.js" ],
-    "persistent": false
-  },
+  "description": "God power in your hand!",
   "browser_action": {
     "default_icon": "logo.png",
     "default_popup": "popup.html"
   },
   "permissions": [
     "activeTab",
-    "storage",
-    "https://www.vietnamairlines.com/"
+    "storage"
   ]
 }
