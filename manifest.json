@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
-  "name": "God hand",
+  "name": "iihanashida",
   "version": "1.0.0",
-  "description": "God power in your hand!",
+  "description": "iihanashida button",
   "browser_action": {
     "default_icon": "logo.png",
     "default_popup": "popup.html"

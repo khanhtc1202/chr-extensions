@@ -3,6 +3,6 @@ function renderText(src, statusText) {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-    let text = "Power in your hand";
+    let text = "What do want to say?";
     renderText('greeting', text);
 });
