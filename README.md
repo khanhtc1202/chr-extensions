@@ -1,4 +1,8 @@
-# Quipper Button
+# Chr-Extensions
+
+Set of chrome extensions
+
+## How to use
 
 To add this extension to your chrome
 
