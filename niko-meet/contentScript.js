@@ -1,23 +1,41 @@
 
-var XPath = '//*[@id="ow3"]/div[1]/div/div[3]/div[3]/div[3]/div/div[2]/div/div[2]/span[2]/div/div[1]/child::text()';
-var messages = [].slice.apply(document.getElementsByTagName('a'));
+var oldMessages = [];
 
-function showMessage(index) {
-var elemId = `niko-meet-${index}`
-var elem = document.createElement('div');
-elem.setAttribute("id", elemId);
-elem.style.cssText = 'position:absolute;font-size:1.5em;color:#00FF00;z-index:100;';
-elem.appendChild(document.createTextNode(messages[index]));
-document.body.appendChild(elem);
-setTimeout(function() {
-var ele = document.getElementById(elemId);
-document.body.removeChild(ele);
-}, 1000);
+// Get all links on current page
+// TODO: get all messages from chat box
+function getAllMessages() {
+  var links = [].slice.apply(document.getElementsByTagName('a'));
+  var messages = links.map(function(element) {
+    return element.innerText || element.textContent;
+  });
+  return messages;
 }
 
-messages.map(function (message, index) {
-showMessage(index);
-});
+// Show message in 1 second
+// TODO: change to nico nico text 
+function showMessage(message) {
+  var elemId = `niko-meet-${Math.random().toString(36).substring(7)}`;
 
-chrome.extension.sendRequest(messages);
+  var elem = document.createElement('div');
+  elem.setAttribute("id", elemId);
+  elem.style.cssText = 'position:absolute;font-size:1.5em;color:#00FF00;z-index:100;';
+  elem.appendChild(document.createTextNode(message));
+  document.body.appendChild(elem);
+
+  setTimeout(function() {
+    var ele = document.getElementById(elemId);
+    document.body.removeChild(ele);
+  }, 1000);
+}
+
+setInterval(function() {
+  var messages = getAllMessages();
+  messages.map(function(message) {
+    if (oldMessages.indexOf(message) === -1) {
+      oldMessages.push(message);
+      showMessage(message);
+    }
+  });
+}, 2000);
+
 

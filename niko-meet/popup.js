@@ -1,4 +1,8 @@
+function renderText(dest, text) {
+  document.getElementById(dest).textContent = text;
+}
 
-chrome.extension.onRequest.addListener(function(messages) {
-console.log(messages);
+document.addEventListener('DOMContentLoaded', function () {
+  renderText('title', 'Nico Nico Meet');
+  renderText('description', 'Only works on Google Meet page :)');
 });
