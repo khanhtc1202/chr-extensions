@@ -16,7 +16,7 @@ function getAllMessages() {
 function createScreen() {
   var app = document.createElement('div');
   app.setAttribute("id", "app");
-  app.style.cssText = `position:absolute;opacity:0.3;background-color:#000;z-index:100;width:${SCREEN_WIDTH};height:${SCREEN_HEIGHT}`;
+  app.style.cssText = `position:absolute;background-color:rgba(0,0,0,0.3);z-index:100;width:${SCREEN_WIDTH};height:${SCREEN_HEIGHT}`;
   document.body.appendChild(app);
 }
 
