@@ -1,71 +1,87 @@
 
-var oldMessages = [];
-var SCREEN_WIDTH  = window.screen.width;
-var SCREEN_HEIGHT = window.screen.height;
+let oldMessages   = [];
+let nicoObj       = null;
+let SCREEN_WIDTH  = window.screen.width;
+let SCREEN_HEIGHT = window.screen.height;
 
-// Get all links on current page
+// CSS
+let AppCSS = `position:absolute;background-color:rgba(0,0,0,0.3);width:${SCREEN_WIDTH}px;height:${SCREEN_HEIGHT}px;z-index:100`;
+let StartBtnCSS = `position:absolute;z-index:100;right:0px;bottom:100px`;
+let EndBtnCSS = `position:absolute;top:0px;z-index:101;width:20px;height:20px;display:block;border-radius:50%;border:1px solid white`;
+
+function createBodyElement(type, id, text, CSS) {
+  let ele = document.createElement(type);
+  ele.setAttribute('id', id);
+  ele.style.cssText = CSS;
+  ele.textContent = text;
+  document.body.appendChild(ele);
+}
+
+function deleteBodyElement(id) {
+  let ele = document.getElementById(id);
+  document.body.removeChild(ele);
+}
+
 // TODO: get all messages from chat box
 function getAllMessages() {
-  var links = [].slice.apply(document.getElementsByTagName('a'));
-  var messages = links.map(function(element) {
+  let links = [].slice.apply(document.getElementsByTagName('a'));
+  let messages = links.map(function(element) {
     return element.innerText || element.textContent;
   });
   return messages;
 }
 
-function createScreen() {
-  var app = document.createElement('div');
-  app.setAttribute("id", "app");
-  app.style.cssText = `position:absolute;background-color:rgba(0,0,0,0.3);z-index:100;width:${SCREEN_WIDTH};height:${SCREEN_HEIGHT}`;
-  document.body.appendChild(app);
+function onClickEndButton() {
+  // remove itself
+  deleteBodyElement('niko-end');
+  // remove screen play
+  deleteBodyElement('app');
+  // add start button back to screen
+  createStartButton();
 }
 
-function clearScreen() {
-  var app = document.getElementById('app');
-  document.body.removeChild(app);
+function createEndButton() {
+  createBodyElement('button', 'niko-end', 'X', EndBtnCSS);
+  document.getElementById('niko-end').onclick = onClickEndButton;
 }
 
-function onNikoStart() {
-  createScreen();
-  var nico = new nicoJS({
-    app       : document.getElementById('app'),
-    width     : SCREEN_WIDTH,
-    height    : SCREEN_HEIGHT,
-    font_size : 50,
-    color     : '#00FF00'
-  });
-  
-  nico.listen();
-  
+function onClickStartButton() {
+  // remove itself
+  deleteBodyElement('niko-start');
+
+  // create play screen
+  createBodyElement('div', 'app', '', AppCSS);
+  createEndButton();
+
+  // create niko
+  if (nicoObj === null) {
+    nicoObj = new nicoJS({
+      app: document.getElementById('app'),
+      width: SCREEN_WIDTH,
+      height: SCREEN_HEIGHT,
+      font_size: 50,
+      color: '#00FF00'
+    });
+  }
+
+  nicoObj.listen();
+
   setInterval(function() {
-    var messages = getAllMessages();
+    let messages = getAllMessages();
     messages.map(function(message) {
+      let color = '#' + Math.floor(Math.random()*16777215).toString(16);
       if (oldMessages.indexOf(message) === -1) {
         oldMessages.push(message);
-        var color = '#' + Math.floor(Math.random()*16777215).toString(16);
-        nico.send(message, color);
+        nicoObj.send(message, color);
       }
+      nicoObj.send('Nothing', color);
     });
   }, 1000);
 }
 
-function onNikoStop() {
-  clearScreen();
+function createStartButton() {
+  createBodyElement('button', 'niko-start', 'Start Niko', StartBtnCSS);
+  document.getElementById('niko-start').onclick = onClickStartButton;
 }
 
-chrome.runtime.onMessage.addListener(
-  function(request, sender, sendResponse) {
-    if (request.niko === "start") {
-      onNikoStart();
-      sendResponse({text: "niko started"});
-    } else if (request.niko === "end") {
-      onNikoStop();
-      sendResponse({text: "niko ended"});
-    } else {
-      sendResponse({text: "something when wrong"});
-    }
-  }
-);
-
-
-
+createStartButton();
