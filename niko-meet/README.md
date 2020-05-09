@@ -2,7 +2,7 @@
 
 Show google meets chat messages in nico nico way
 
-![demo](https://i.imgur.com/Kzky2TY.gif)
+[demo](https://i.imgur.com/Kzky2TY.gif)
 
 ## Install
 
