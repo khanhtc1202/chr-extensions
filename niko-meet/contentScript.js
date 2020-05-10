@@ -11,7 +11,7 @@ let intervalPtr   = null;
 
 // CSS
 let AppCSS = `position:absolute;background-color:rgba(0,0,0,0.3);width:${SCREEN_WIDTH}px;height:${SCREEN_HEIGHT}px;z-index:100`;
-let BtnCloseCSS = `position:absolute;top:0px;z-index:101;width:50px;height:50px;background: ${CLOSE_BTN_IMAGE} no-repeat;cursor:pointer;border: none`;
+let BtnCloseCSS = `position:absolute;top:10px;left:10px;z-index:101;width:50px;height:50px;background: ${CLOSE_BTN_IMAGE} no-repeat;cursor:pointer;border: none`;
 
 function createBodyElement(type, id, CSS) {
   let ele = document.createElement(type);
