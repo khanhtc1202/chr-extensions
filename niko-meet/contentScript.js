@@ -1,8 +1,11 @@
 
-let oldMessages   = [];
-let nicoObj       = null;
 let SCREEN_WIDTH  = window.screen.width;
 let SCREEN_HEIGHT = window.screen.height;
+
+// app control variables
+let oldMessages   = [];
+let nicoObj       = null;
+let intervalPtr   = null;
 
 // CSS
 let AppCSS = `position:absolute;background-color:rgba(0,0,0,0.3);width:${SCREEN_WIDTH}px;height:${SCREEN_HEIGHT}px;z-index:100`;
@@ -25,10 +28,14 @@ function deleteBodyElement(id) {
 // TODO: get all messages from chat box
 function getAllMessages() {
   let links = [].slice.apply(document.getElementsByTagName('a'));
-  let messages = links.map(function(element) {
+  return links.map(function (element) {
     return element.innerText || element.textContent;
   });
-  return messages;
+}
+
+function sendMessages(sender, message) {
+  let color = '#' + Math.floor(Math.random()*16777215).toString(16);
+  sender.send(message, color);
 }
 
 function onClickEndButton() {
@@ -38,6 +45,13 @@ function onClickEndButton() {
   deleteBodyElement('app');
   // add start button back to screen
   createStartButton();
+  // remove interval
+  if (intervalPtr !== null) {
+    clearInterval(intervalPtr);
+    intervalPtr = null;
+  }
+  // remove old nicoObj
+  nicoObj = null;
 }
 
 function createEndButton() {
@@ -66,15 +80,15 @@ function onClickStartButton() {
 
   nicoObj.listen();
 
-  setInterval(function() {
+  intervalPtr = setInterval(function() {
     let messages = getAllMessages();
     messages.map(function(message) {
-      let color = '#' + Math.floor(Math.random()*16777215).toString(16);
       if (oldMessages.indexOf(message) === -1) {
         oldMessages.push(message);
-        nicoObj.send(message, color);
+        sendMessages(nicoObj, message);
       }
-      nicoObj.send('Nothing', color);
+      // spam on no messages :))
+      sendMessages(nicoObj, 'Nothing');
     });
   }, 1000);
 }
