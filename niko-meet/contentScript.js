@@ -1,71 +1,101 @@
 
-var oldMessages = [];
-var SCREEN_WIDTH  = window.screen.width;
-var SCREEN_HEIGHT = window.screen.height;
+let SCREEN_WIDTH  = window.screen.width;
+let SCREEN_HEIGHT = window.screen.height;
+let SPAM_MESSAGES = ['Nothing', 'wwwww', 'www', 'おおおおお'];
 
-// Get all links on current page
+// app control variables
+let oldMessages   = [];
+let nicoObj       = null;
+let intervalPtr   = null;
+
+// CSS
+let AppCSS = `position:absolute;background-color:rgba(0,0,0,0.3);width:${SCREEN_WIDTH}px;height:${SCREEN_HEIGHT}px;z-index:100`;
+let EndBtnCSS = `position:absolute;top:0px;z-index:101;width:20px;height:20px;display:block;border-radius:50%;border:1px solid white`;
+
+function createBodyElement(type, id, text, CSS) {
+  let ele = document.createElement(type);
+  ele.setAttribute('id', id);
+  ele.style.cssText = CSS;
+  ele.textContent = text;
+  document.body.appendChild(ele);
+}
+
+function deleteBodyElement(id) {
+  let ele = document.getElementById(id);
+  document.body.removeChild(ele);
+}
+
 // TODO: get all messages from chat box
 function getAllMessages() {
-  var links = [].slice.apply(document.getElementsByTagName('a'));
-  var messages = links.map(function(element) {
+  let links = [].slice.apply(document.getElementsByTagName('a'));
+  return links.map(function (element) {
     return element.innerText || element.textContent;
   });
-  return messages;
 }
 
-function createScreen() {
-  var app = document.createElement('div');
-  app.setAttribute("id", "app");
-  app.style.cssText = `position:absolute;background-color:rgba(0,0,0,0.3);z-index:100;width:${SCREEN_WIDTH};height:${SCREEN_HEIGHT}`;
-  document.body.appendChild(app);
+function sendMessages(sender, message) {
+  let color = '#' + Math.floor(Math.random()*16777215).toString(16);
+  sender.send(message, color);
 }
 
-function clearScreen() {
-  var app = document.getElementById('app');
-  document.body.removeChild(app);
+function onClickEndButton() {
+  // remove itself
+  deleteBodyElement('niko-end');
+  // remove screen play
+  deleteBodyElement('app');
+  // remove interval
+  if (intervalPtr !== null) {
+    clearInterval(intervalPtr);
+    intervalPtr = null;
+  }
+  // remove old nicoObj
+  nicoObj = null;
+}
+
+function createEndButton() {
+  createBodyElement('button', 'niko-end', 'X', EndBtnCSS);
+  document.getElementById('niko-end').onclick = onClickEndButton;
 }
 
 function onNikoStart() {
-  createScreen();
-  var nico = new nicoJS({
-    app       : document.getElementById('app'),
-    width     : SCREEN_WIDTH,
-    height    : SCREEN_HEIGHT,
-    font_size : 50,
-    color     : '#00FF00'
-  });
-  
-  nico.listen();
-  
-  setInterval(function() {
-    var messages = getAllMessages();
+  // create screen play
+  createBodyElement('div', 'app', '', AppCSS);
+  createEndButton();
+
+  // create niko
+  if (nicoObj === null) {
+    nicoObj = new nicoJS({
+      app: document.getElementById('app'),
+      width: SCREEN_WIDTH,
+      height: SCREEN_HEIGHT,
+      font_size: 50,
+      color: '#00FF00'
+    });
+  }
+
+  nicoObj.listen();
+
+  intervalPtr = setInterval(function() {
+    let messages = getAllMessages();
     messages.map(function(message) {
       if (oldMessages.indexOf(message) === -1) {
         oldMessages.push(message);
-        var color = '#' + Math.floor(Math.random()*16777215).toString(16);
-        nico.send(message, color);
+        sendMessages(nicoObj, message);
       }
     });
+    // spam on no messages :))
+    sendMessages(nicoObj, SPAM_MESSAGES[Math.floor(Math.random() * SPAM_MESSAGES.length)]);
   }, 1000);
 }
 
-function onNikoStop() {
-  clearScreen();
-}
-
+// TODO: addListener is deprecated, replace with something else :))
 chrome.runtime.onMessage.addListener(
-  function(request, sender, sendResponse) {
-    if (request.niko === "start") {
+  function (request, sender, sendResponse) {
+    if (request.niko === "start" && nicoObj === null) {
       onNikoStart();
-      sendResponse({text: "niko started"});
-    } else if (request.niko === "end") {
-      onNikoStop();
-      sendResponse({text: "niko ended"});
+      sendResponse({text: "niko party started"});
     } else {
-      sendResponse({text: "something when wrong"});
+      sendResponse({text: "something went wrong!"});
     }
   }
 );
-
-
-
