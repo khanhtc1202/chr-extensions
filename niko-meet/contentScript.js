@@ -1,6 +1,7 @@
 
 let SCREEN_WIDTH  = window.screen.width;
 let SCREEN_HEIGHT = window.screen.height;
+let SPAM_MESSAGES = ['Nothing', 'wwwww', 'www', 'おおおおお'];
 
 // app control variables
 let oldMessages   = [];
@@ -88,7 +89,7 @@ function onClickStartButton() {
         sendMessages(nicoObj, message);
       }
       // spam on no messages :))
-      sendMessages(nicoObj, 'Nothing');
+      sendMessages(nicoObj, SPAM_MESSAGES[Math.floor(Math.random() * SPAM_MESSAGES.length)]);
     });
   }, 1000);
 }
