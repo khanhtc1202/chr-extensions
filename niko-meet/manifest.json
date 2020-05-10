@@ -8,12 +8,14 @@
     "default_popup": "popup.html"
   },
   "permissions": [
-    "activeTab"
+    "activeTab",
+    "contextMenus"
   ],
   "content_scripts": [
     {
       "matches": ["https://meet.google.com/*"],
       "js": ["nico.js", "contentScript.js"]
     }
-  ]
+  ],
+  "background": { "scripts": ["background.js"] }
 }

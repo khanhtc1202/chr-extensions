@@ -10,7 +10,6 @@ let intervalPtr   = null;
 
 // CSS
 let AppCSS = `position:absolute;background-color:rgba(0,0,0,0.3);width:${SCREEN_WIDTH}px;height:${SCREEN_HEIGHT}px;z-index:100`;
-let StartBtnCSS = `position:absolute;z-index:100;right:0px;bottom:100px`;
 let EndBtnCSS = `position:absolute;top:0px;z-index:101;width:20px;height:20px;display:block;border-radius:50%;border:1px solid white`;
 
 function createBodyElement(type, id, text, CSS) {
@@ -44,8 +43,6 @@ function onClickEndButton() {
   deleteBodyElement('niko-end');
   // remove screen play
   deleteBodyElement('app');
-  // add start button back to screen
-  createStartButton();
   // remove interval
   if (intervalPtr !== null) {
     clearInterval(intervalPtr);
@@ -60,11 +57,8 @@ function createEndButton() {
   document.getElementById('niko-end').onclick = onClickEndButton;
 }
 
-function onClickStartButton() {
-  // remove itself
-  deleteBodyElement('niko-start');
-
-  // create play screen
+function onNikoStart() {
+  // create screen play
   createBodyElement('div', 'app', '', AppCSS);
   createEndButton();
 
@@ -88,15 +82,20 @@ function onClickStartButton() {
         oldMessages.push(message);
         sendMessages(nicoObj, message);
       }
-      // spam on no messages :))
-      sendMessages(nicoObj, SPAM_MESSAGES[Math.floor(Math.random() * SPAM_MESSAGES.length)]);
     });
+    // spam on no messages :))
+    sendMessages(nicoObj, SPAM_MESSAGES[Math.floor(Math.random() * SPAM_MESSAGES.length)]);
   }, 1000);
 }
 
-function createStartButton() {
-  createBodyElement('button', 'niko-start', 'Start Niko', StartBtnCSS);
-  document.getElementById('niko-start').onclick = onClickStartButton;
-}
-
-createStartButton();
+// TODO: addListener is deprecated, replace with something else :))
+chrome.runtime.onMessage.addListener(
+  function (request, sender, sendResponse) {
+    if (request.niko === "start" && nicoObj === null) {
+      onNikoStart();
+      sendResponse({text: "niko party started"});
+    } else {
+      sendResponse({text: "something went wrong!"});
+    }
+  }
+);
