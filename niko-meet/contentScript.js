@@ -25,16 +25,39 @@ function deleteBodyElement(id) {
   document.body.removeChild(ele);
 }
 
-function getAllMessages() {
+function getMessagesOnChatLog() {
   let messages = [].slice.apply(document.querySelectorAll("div[data-message-text]"));
   return messages.map(function (element) {
     return element.innerText || element.textContent;
   });
 }
 
-function sendMessages(sender, message) {
+function getMessagesOnNotification() {
+  // TODO implement
+  return SPAM_MESSAGES;
+}
+
+function getDisplayableMessages() {
+  let messages = getMessagesOnChatLog();
+  if (messages.length === 0) {
+    messages = getMessagesOnNotification();
+  }
+  let newMessages = messages.filter(function (message) {
+    return (oldMessages.indexOf(message) === -1);
+  });
+  oldMessages.push(...newMessages);
+  return newMessages;
+}
+
+function sendMessage(sender, message) {
   let color = '#' + Math.floor(Math.random()*16777215).toString(16);
   sender.send(message, color);
+}
+
+function sendSpamAfter(sender, timeInMs) {
+  setTimeout(function () {
+    sendMessage(sender, SPAM_MESSAGES[Math.floor(Math.random() * SPAM_MESSAGES.length)]);
+  }, timeInMs);
 }
 
 function onClickEndButton() {
@@ -75,15 +98,12 @@ function onNikoStart() {
   nicoObj.listen();
 
   intervalPtr = setInterval(function() {
-    let messages = getAllMessages();
+    let messages = getDisplayableMessages();
     messages.map(function(message) {
-      if (oldMessages.indexOf(message) === -1) {
-        oldMessages.push(message);
-        sendMessages(nicoObj, message);
-      }
+      sendMessage(nicoObj, message);
     });
     // spam on no messages :))
-    sendMessages(nicoObj, SPAM_MESSAGES[Math.floor(Math.random() * SPAM_MESSAGES.length)]);
+    sendSpamAfter(nicoObj, 500);
   }, 1000);
 }
 
