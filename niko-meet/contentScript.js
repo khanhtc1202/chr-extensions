@@ -113,7 +113,7 @@ function onNikoStart() {
       sendMessageAfter(nicoObj, message, getRandomInt(sendingRangeTime));
     });
     // spam on no messages :))
-    sendSpamAfter(nicoObj, 500);
+    sendSpamAfter(nicoObj, 1000);
   }, 1000);
 }
 
