@@ -25,10 +25,9 @@ function deleteBodyElement(id) {
   document.body.removeChild(ele);
 }
 
-// TODO: get all messages from chat box
 function getAllMessages() {
-  let links = [].slice.apply(document.getElementsByTagName('a'));
-  return links.map(function (element) {
+  let messages = [].slice.apply(document.querySelectorAll("div[data-message-text]"));
+  return messages.map(function (element) {
     return element.innerText || element.textContent;
   });
 }
