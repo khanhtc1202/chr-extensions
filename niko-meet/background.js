@@ -1,14 +1,17 @@
 
-function getClickHandler() {
-  chrome.tabs.query({active: true}, function (tabs) {
-    chrome.tabs.sendMessage(tabs[0].id, {niko: "start"}, function (response) {
+function getClickHandler(info, tab) {
+  if (RegExp('https://meet.google.com/*').test(tab.url)) {
+    chrome.tabs.sendMessage(tab.id, {niko: "start"}, function (response) {
       console.log('response:', response);
     })
-  })
+  } else {
+    alert('Niko Meets extension only works on Google Meets page!');
+  }
 }
 
 chrome.contextMenus.create({
-  "title" : "Start Niko Niko Meets Party",
-  "type" : "normal",
-  "onclick" : getClickHandler
+  'id': 'nikoMeets',
+  'title' : 'Start Niko Niko Meets Party',
+  'contexts': ['all'],
+  'onclick': getClickHandler
 });
