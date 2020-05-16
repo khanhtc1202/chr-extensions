@@ -26,15 +26,10 @@ const STOP_WORDS = [
 // app control variables
 let oldMessages   = STOP_WORDS; // initialize with STOP_WORDS to avoid dump texts
 let nicoObj       = null;
-let intervalPtr   = null;
 
 // CSS
 const AppCSS = `position:absolute;background-color:rgba(0,0,0,0.3);width:${SCREEN_WIDTH}px;height:${SCREEN_HEIGHT}px;z-index:100`;
 const BtnCloseCSS = `position:absolute;top:10px;left:10px;z-index:101;width:50px;height:50px;background: ${CLOSE_BTN_IMAGE} no-repeat;cursor:pointer;border: none`;
-
-function getRandomInt(max) {
-  return Math.floor(Math.random() * Math.floor(max));
-}
 
 function createBodyElement(type, id, CSS) {
   const ele = document.createElement(type);
@@ -49,14 +44,14 @@ function deleteBodyElement(id) {
 }
 
 function getMessagesOnChatLog() {
-  let messages = [].slice.apply(document.querySelectorAll("div[data-message-text]"));
+  const messages = [].slice.apply(document.querySelectorAll("div[data-message-text]"));
   return messages.map(function (element) {
     return element.innerText || element.textContent;
   });
 }
 
 function getMessagesOnNotificationPopup() {
-  let messages = [].slice.apply(document.querySelectorAll("span[jsslot]"))
+  const messages = [].slice.apply(document.querySelectorAll("span[jsslot]"))
     .filter(function (element) {
       return element.innerText.length > 0;
     });
@@ -78,15 +73,8 @@ function getDisplayableMessages() {
   return newMessages;
 }
 
-function sendMessage(sender, message) {
-  const color = '#' + Math.floor(Math.random()*16777215).toString(16);
-  sender.send(message, color);
-}
-
-function sendMessageAfter(sender, message, timeInMs) {
-  setTimeout(function () {
-    sendMessage(sender, message);
-  }, timeInMs);
+function randomColor() {
+  return '#' + Math.floor(Math.random()*16777215).toString(16);
 }
 
 function onClickEndButton() {
@@ -94,11 +82,6 @@ function onClickEndButton() {
   deleteBodyElement('niko-end');
   // remove screen play
   deleteBodyElement('app');
-  // remove interval
-  if (intervalPtr !== null) {
-    clearInterval(intervalPtr);
-    intervalPtr = null;
-  }
   // remove old nicoObj
   nicoObj = null;
 }
@@ -125,15 +108,16 @@ function onNikoStart() {
   }
 
   nicoObj.listen();
-
-  intervalPtr = setInterval(function() {
-    const messages = getDisplayableMessages();
-    const sendingRangeTime = 20 * messages.length;
-    messages.map(function(message) {
-      sendMessageAfter(nicoObj, message, getRandomInt(sendingRangeTime));
-    });
-  }, 1000);
 }
+
+document.addEventListener('DOMNodeInserted', function (e) {
+  if (nicoObj !== null) {
+    const messages = getDisplayableMessages();
+    messages.map(function(message) {
+      nicoObj.send(message, randomColor());
+    });
+  }
+});
 
 // TODO: addListener is deprecated, replace with something else :))
 chrome.runtime.onMessage.addListener(
