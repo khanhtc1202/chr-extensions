@@ -74,7 +74,8 @@ function getDisplayableMessages() {
 }
 
 function randomColor() {
-  return '#' + Math.floor(Math.random()*16777215).toString(16);
+  const color = '#' + Math.floor(Math.random()*16777215).toString(16);
+  return color === '#ffffff' || color === '#000000' ? '#00ff00' : color;
 }
 
 function onClickEndButton() {
@@ -102,15 +103,14 @@ function onNikoStart() {
       app: document.getElementById('app'),
       width: SCREEN_WIDTH,
       height: SCREEN_HEIGHT,
-      font_size: 50,
-      color: '#00FF00'
+      font_size: 50
     });
   }
 
   nicoObj.listen();
 }
 
-document.addEventListener('DOMNodeInserted', function (e) {
+document.addEventListener('DOMNodeInserted', function () {
   if (nicoObj !== null) {
     const messages = getDisplayableMessages();
     messages.map(function(message) {
