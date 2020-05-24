@@ -5,7 +5,7 @@ chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({
     id: CONTEXT_MENU_ITEM_ID,
     title : 'Start Niko Niko Meets Party',
-    contexts: ['selection'],
+    contexts: ['all'],
   });
 });
 

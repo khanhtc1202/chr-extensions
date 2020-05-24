@@ -1,4 +1,4 @@
-import { nicoJS } from 'nicojs';
+import * as nicoJS from 'nicojs';
 
 const SCREEN_WIDTH  = window.screen.width;
 const SCREEN_HEIGHT = window.screen.height;
