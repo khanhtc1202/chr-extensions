@@ -74,7 +74,7 @@ const getDisplayableMessages = () => {
     return newMessages;
 };
 
-const randomColor = (): string => {
+const randomColor = () => {
     const color = '#' + Math.floor(Math.random()*16777215).toString(16);
     return color === '#ffffff' || color === '#000000' ? '#00ff00' : color;
 };

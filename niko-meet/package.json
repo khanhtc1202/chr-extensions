@@ -13,11 +13,8 @@
     "nicojs": "^1.1.8"
   },
   "devDependencies": {
-    "@babel/preset-typescript": "^7.9.0",
     "@types/chrome": "^0.0.114",
     "copy-webpack-plugin": "^6.0.1",
-    "ts-loader": "^7.0.4",
-    "typescript": "^3.9.3",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11"
   }

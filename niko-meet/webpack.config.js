@@ -6,8 +6,8 @@ const distDir = './dist/';
 module.exports = {
     mode: 'production',
     entry: {
-        contentScript: path.join(__dirname, srcDir + 'contentScript.ts'),
-        background: path.join(__dirname, srcDir + 'background.ts')
+        contentScript: path.join(__dirname, srcDir + 'contentScript.js'),
+        background: path.join(__dirname, srcDir + 'background.js')
     },
     output: {
         path: path.join(__dirname, distDir + 'js'),
@@ -19,17 +19,8 @@ module.exports = {
             chunks: 'initial'
         }
     },
-    module: {
-        rules: [
-            {
-                test: /\.tsx?$/,
-                use: 'ts-loader',
-                exclude: /node_modules/,
-            }
-        ]
-    },
     resolve: {
-        extensions: ['.ts', '.tsx', 'js']
+        extensions: ['js']
     },
     plugins: [
         new CopyPlugin({
