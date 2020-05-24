@@ -1,14 +1,8 @@
 import * as nicoJS from 'nicojs';
-import {
-  AppCSS,
-  BtnCloseCSS,
-  STOP_WORDS,
-  SCREEN_WIDTH,
-  SCREEN_HEIGHT,
-} from './constant';
+import {AppCSS, BtnCloseCSS, SCREEN_HEIGHT, SCREEN_WIDTH, STOP_WORDS,} from './constant';
 
 // app control variables
-let oldMessages   = STOP_WORDS; // initialize with STOP_WORDS to avoid dump texts
+let oldMessages   = new Set(STOP_WORDS); // initialize with STOP_WORDS to avoid dump texts
 let nicoObj       = null;
 let chatOpened    = false;
 
@@ -47,11 +41,13 @@ const getDisplayableMessages = () => {
   if (texts.length === 0) {
     texts.push(...getMessagesOnNotificationPopup());
   }
-  const newMessages = texts.filter(function (message) {
-    return (oldMessages.indexOf(message) === -1);
+  return texts.filter(function (message) {
+    if (!oldMessages.has(message)) {
+      oldMessages.add(message);
+      return true;
+    }
+    return false;
   });
-  oldMessages.push(...newMessages);
-  return newMessages;
 };
 
 const randomColor = () => {

@@ -20,7 +20,9 @@ export const STOP_WORDS = [
   'Turn on captions',
   'Turn off captions',
   'Start streaming',
-  'Phone connectedReconnectCalling'
+  'Phone connectedReconnectCalling',
+  'Add people',
+  'Send a message to everyone',
 ];
 
 // CSS
