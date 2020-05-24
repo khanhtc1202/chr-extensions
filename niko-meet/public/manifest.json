@@ -3,22 +3,26 @@
   "name": "niko-meet",
   "version": "1.0.0",
   "description": "niko chat for google meet",
-  "browser_action": {
-    "default_icon": "logo.png",
-    "default_popup": "popup.html"
-  },
   "icons": {
-    "192": "logo.png"
+    "192": "images/logo.png"
   },
   "permissions": [
     "activeTab",
-    "contextMenus"
+    "contextMenus",
+    "declarativeContent"
   ],
+  "browser_action": {
+    "default_icon": "images/logo.png",
+    "default_popup": "popup.html"
+  },
   "content_scripts": [
     {
       "matches": ["https://meet.google.com/*"],
       "js": ["js/contentScript.js"]
     }
   ],
-  "background": { "scripts": ["js/background.js"] }
+  "background": {
+    "scripts": ["js/background.js"],
+    "persistent": false
+  }
 }
