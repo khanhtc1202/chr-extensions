@@ -7,7 +7,8 @@
   "author": "khanhtc1202",
   "license": "MIT",
   "scripts": {
-    "build": "webpack"
+    "build:dev": "BUILD_MODE=development webpack",
+    "build": "BUILD_MODE=production webpack"
   },
   "dependencies": {
     "nicojs": "^1.1.8"

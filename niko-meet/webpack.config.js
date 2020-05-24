@@ -4,7 +4,7 @@ const srcDir = './src/';
 const distDir = './dist/';
 
 module.exports = {
-    mode: 'production',
+    mode: process.env.BUILD_MODE,
     entry: {
         contentScript: path.join(__dirname, srcDir + 'contentScript.js'),
         background: path.join(__dirname, srcDir + 'background.js')
