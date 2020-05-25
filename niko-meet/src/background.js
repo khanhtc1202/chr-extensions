@@ -1,10 +1,12 @@
 
 const CONTEXT_MENU_ITEM_ID = 'nikoMeets';
 
-chrome.contextMenus.create({
-  id: CONTEXT_MENU_ITEM_ID,
-  title : 'Start Niko Niko Meets Party',
-  contexts: ['all'],
+chrome.runtime.onInstalled.addListener(() => {
+  chrome.contextMenus.create({
+    id: CONTEXT_MENU_ITEM_ID,
+    title : 'Start Niko Niko Meets Party',
+    contexts: ['all'],
+  });
 });
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
