@@ -21,7 +21,7 @@ export const STOP_WORDS = [
   'Turn off captions',
   'Start streaming',
   'Phone connectedReconnectCalling',
-  'Add people',
+  'person_addAdd people',
   'Send a message to everyone',
 ];
 
