@@ -71,13 +71,16 @@ const createEndButton = () => {
 
 const addChatButtonClickedHandler = () => {
   const buttons = [].slice.apply(document.querySelectorAll("div[role='button']"));
-  buttons[7].onclick = () => {
-    if (nicoObj !== null) {
-      const app = document.getElementById('app');
-      app.style.width = `${SCREEN_WIDTH - 320}px`;
-      chatOpened = true;
-    }
-  };
+  const i = buttons.findIndex(e => (e.ariaLabel === 'Chat with other participants'));
+  if (i > 0) {
+    buttons[i].onclick = () => {
+      if (nicoObj !== null) {
+        const app = document.getElementById('app');
+        app.style.width = `${SCREEN_WIDTH - 320}px`;
+        chatOpened = true;
+      }
+    };
+  }
 };
 
 const onNikoStart = () => {
