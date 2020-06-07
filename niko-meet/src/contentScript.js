@@ -71,7 +71,7 @@ const createEndButton = () => {
 
 const addChatButtonClickedHandler = () => {
   const buttons = [].slice.apply(document.querySelectorAll("div[role='button']"));
-  const i = buttons.findIndex(e => (e.ariaLabel === 'Chat with other participants'));
+  const i = buttons.findIndex(e => (e.ariaLabel === 'Chat with everyone'));
   if (i > 0) {
     buttons[i].onclick = () => {
       if (nicoObj !== null) {
