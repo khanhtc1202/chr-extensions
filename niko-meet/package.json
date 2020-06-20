@@ -8,7 +8,8 @@
   "license": "MIT",
   "scripts": {
     "build:dev": "BUILD_MODE=development webpack",
-    "build": "BUILD_MODE=production webpack"
+    "build": "BUILD_MODE=production webpack",
+    "compress": "mkdir -p publish && zip -r publish/NikoMeets.zip dist/*"
   },
   "dependencies": {
     "nicojs": "^1.1.8"
