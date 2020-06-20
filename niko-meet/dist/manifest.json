@@ -1,6 +1,5 @@
 {
   "manifest_version": 2,
-  "title": "Niko Meets",
   "name": "niko-meets",
   "version": "1.0.0",
   "description": "niko chat for google meet",
