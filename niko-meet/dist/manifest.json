@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "niko-meets",
   "version": "1.0.0",
-  "description": "On-screen Google Meets chat log messages flow",
+  "description": "All the messages on your Google Meets tab's chat box will flow on your screen as it is on Niconico Live.",
   "icons": {
     "192": "images/logo.png"
   },
