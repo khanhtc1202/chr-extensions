@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "niko-meets",
   "version": "1.0.0",
-  "description": "niko chat for google meet",
+  "description": "On-screen Google Meets chat log messages flow",
   "icons": {
     "192": "images/logo.png"
   },
