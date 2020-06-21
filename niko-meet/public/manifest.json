@@ -4,14 +4,19 @@
   "version": "1.0.0",
   "description": "All the messages on your Google Meets tab's chat box will flow on your screen as it is on Niconico Live.",
   "icons": {
-    "192": "images/logo.png"
+    "16": "icons/icon16.png",
+    "128": "icons/icon128.png"
   },
   "permissions": [
     "activeTab",
     "contextMenus"
   ],
   "browser_action": {
-    "default_icon": "images/logo.png",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "24": "icons/icon24.png",
+      "32": "icons/icon32.png"
+    },
     "default_popup": "popup.html"
   },
   "content_scripts": [
